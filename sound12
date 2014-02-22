@@ -1,0 +1,23 @@
+#!/bin/bash
+
+gpio mode 1 pwm  # set wiringPi pin 1 to PWM (this is the same as BCM_GPIO pin 18, or header pin 12, or right column 6 down)
+gpio pwm-ms     # change the PWM mode to Mark-Space ratio
+
+max=3;
+
+for ((i=0; i<$max; ++i )) ; 
+do
+	gpio pwmr 344 #bip
+	gpio pwm 1 100 # write a PWM value to pin 1. This is the mark time, and it's half the space time to give a square wave
+	
+	sleep 0.04 #sleep for 40 000 Micro Seconds
+	
+	gpio pwmr 1 #silence
+	gpio pwm 1 100
+	
+	sleep 0.04
+	
+done
+
+gpio mode 1 in # Sound off
+
